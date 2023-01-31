@@ -36,7 +36,7 @@ jobs:
             ./**/packages/pub-playwright/index.html
           retention-days: 5
       - name: Rename finally
-        run: mv index.html index-${{ matrix.shardIndex }}.html
+        run: mv ./packages/pub-playwright/index.html ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
       - name: Upload Test Results
         uses: actions/upload-artifact@v3
         if: always()
