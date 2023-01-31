@@ -1,13 +1,6 @@
 name: Playwright E2E
 on:
   workflow_dispatch:
-    inputs:
-      testsToRun:
-        type: string
-        default: ''
-      stage:
-        type: string
-        default: 'QA'
 jobs:
   Tests:
     name: 'Try artifact ${{ matrix.shardIndex }}'
@@ -28,6 +21,15 @@ jobs:
           path: |
             ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
           retention-days: 5
+  Download:
+    name: 'Try downloading'
+    needs: 'Tests'
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: 'a'
+    
         
 #       - name: Env variables
 #         run: |
