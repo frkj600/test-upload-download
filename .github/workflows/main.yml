@@ -10,14 +10,14 @@ on:
         default: 'QA'
 jobs:
   Tests:
-    name: 'Try artifact'
+    name: 'Try artifact ${{ matrix.shardIndex }}'
     runs-on: [ubuntu-latest]
 #     continue-on-error: true
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         shardIndex: [1,2,3,4,5,6]
-#         shardTotal: [6]
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1,2]
+        shardTotal: [2]
     steps:
       - uses: actions/checkout@v1
       - name: Upload Test Results
@@ -26,15 +26,7 @@ jobs:
         with:
           name: a
           path: |
-            ./packages/pub-playwright/index-1.html
-          retention-days: 5
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: a
-          path: |
-            ./packages/pub-playwright/index-2.html
+            ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
           retention-days: 5
         
 #       - name: Env variables
