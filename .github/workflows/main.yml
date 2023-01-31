@@ -29,6 +29,8 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: 'a'
+      - name: Display structure of downloaded files
+        run: ls -R
     
         
 #       - name: Env variables
