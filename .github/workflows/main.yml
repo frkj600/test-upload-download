@@ -19,7 +19,7 @@ jobs:
         with:
           name: a
           path: |
-            ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
+            ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
           retention-days: 5
   Download:
     name: 'Try downloading'
