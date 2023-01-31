@@ -1,0 +1,47 @@
+name: Playwright E2E
+on:
+  workflow_dispatch:
+    inputs:
+      testsToRun:
+        type: string
+        default: ''
+      stage:
+        type: string
+        default: 'QA'
+jobs:
+  Tests:
+    name: 'Try artifact'
+    runs-on: [ubuntu-latest]
+#     continue-on-error: true
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         shardIndex: [1,2,3,4,5,6]
+#         shardTotal: [6]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: a
+          path: |
+            ./packages/pub-playwright/index-1.html
+          retention-days: 5
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: a
+          path: |
+            ./packages/pub-playwright/index-2.html
+          retention-days: 5
+        
+#       - name: Env variables
+#         run: |
+#           echo "my env variable is ${{ github.event.client_payload.testsToRun }}"
+#           echo "my workflow inputs is ${{ github.event.inputs.testsToRun }} ${{ github.event.inputs.stage }}"
+#           echo "Done"
+          
+
+
