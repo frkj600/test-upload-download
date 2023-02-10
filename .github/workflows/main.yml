@@ -35,7 +35,7 @@ jobs:
         env:
            STAGE_PARAM : qa
         run: |
-          export env.STAGE_T = 'qa' 
+          ${{ env.STAGE_PARAM}} = 'qa' 
           echo "work flow is ${{ env.STAGE_PARAM}}"
           echo "STAGE=${{ env.STAGE_PARAM}}" >> $GITHUB_OUTPUT
           echo "test=world" >> $GITHUB_OUTPUT
