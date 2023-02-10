@@ -39,7 +39,7 @@ jobs:
           echo "STAGE=${{ env.STAGE_PARAM}}" >> $GITHUB_OUTPUT
           echo "test=world" >> $GITHUB_OUTPUT
     outputs:
-      STAGE: ${{ steps.customenv.env.STAGE_PARAM }}
+      STAGE: ${{ steps.customenv.outputs.STAGE }}
             
 #       - name: Upload Test Results
 #         uses: actions/upload-artifact@v3
