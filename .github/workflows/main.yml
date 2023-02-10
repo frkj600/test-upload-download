@@ -38,6 +38,8 @@ jobs:
           echo "work flow is ${{ env.STAGE_PARAM}}"
           echo "STAGE=${{ env.STAGE_PARAM}}" >> $GITHUB_OUTPUT
           echo "test=world" >> $GITHUB_OUTPUT
+    outputs:
+      STAGE: ${{ steps.customenv.env.STAGE_PARAM }}
             
 #       - name: Upload Test Results
 #         uses: actions/upload-artifact@v3
@@ -63,7 +65,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: Dispaly env of prev job
-        run:  echo "workflow env stage  is ${{ toJSON(needs.Tests) }}"
+        run:  echo "workflow env stage  is ${{ toJSON(needs.Tests.outputs.STAGE) }}"
 #       - uses: actions/download-artifact@v3
 #         with:
 #           name: 'a'
