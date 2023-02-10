@@ -2,6 +2,8 @@ name: Playwright E2E
 on:
   workflow_dispatch:
   push:
+env:
+  STAGE_T : 'edge'
 jobs:
 #   uploadonefile:
 #     name: 'uploadonefile'
@@ -33,6 +35,7 @@ jobs:
         env:
            STAGE_PARAM : qa
         run: |
+          ${{ env.STAGE_T = 'qa' }}
           echo "work flow is ${{ env.STAGE_PARAM}}"
           echo "STAGE=${{ env.STAGE_PARAM}}" >> $GITHUB_OUTPUT
           echo "test=world" >> $GITHUB_OUTPUT
@@ -61,7 +64,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: Dispaly env of prev job
-        run:  echo "workflow env stage  is ${{needs.Tests.name}}"
+        run:  echo "workflow env stage  is ${{env.STAGE_T}}"
 #       - uses: actions/download-artifact@v3
 #         with:
 #           name: 'a'
