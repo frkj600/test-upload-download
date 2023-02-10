@@ -27,34 +27,42 @@ jobs:
         shardTotal: [2]
     steps:
       - uses: actions/checkout@v1
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: a
-          path: |
-            ./**/packages/pub-playwright/index.html
-          retention-days: 5
-      - name: Rename finally
-        run: mv ./packages/pub-playwright/index.html ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: b
-          path: |
-            ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
-          retention-days: 5
+      - name: Run env
+        env:
+           STAGE_PARAM : qa
+        run: echo "work flow is ${{ env.STAGE_PARAM}}"
+            
+#       - name: Upload Test Results
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: a
+#           path: |
+#             ./**/packages/pub-playwright/index.html
+#           retention-days: 5
+#       - name: Rename finally
+#         run: mv ./packages/pub-playwright/index.html ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
+#       - name: Upload Test Results
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: b
+#           path: |
+#             ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
+#           retention-days: 5
   Download:
     name: 'Try downloading'
     needs: 'Tests'
     runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: 'a'
+      - name: Dispaly env of prev job
+        run:  echo "workflow env stage  is ${{ jobs.Tests.steps.env }}"
+#       - uses: actions/download-artifact@v3
+#         with:
+#           name: 'a'
       - name: Display structure of downloaded files
         run: ls -R
+    
           
 
 
