@@ -61,7 +61,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: Dispaly env of prev job
-        run:  echo "workflow env stage  is ${{ needs.Tests.steps.customenv.outputs.test }}"
+        run:  echo "workflow env stage  is ${{ needs.Tests.steps.customenv.outputs}}"
 #       - uses: actions/download-artifact@v3
 #         with:
 #           name: 'a'
