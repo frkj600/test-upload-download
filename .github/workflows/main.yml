@@ -32,7 +32,9 @@ jobs:
         id: customenv
         env:
            STAGE_PARAM : qa
-        run: echo "work flow is ${{ env.STAGE_PARAM}}"
+        run: |
+          echo "work flow is ${{ env.STAGE_PARAM}}"
+          echo "STAGE=${{ env.STAGE_PARAM}}" >> $GITHUB_OUTPUT
             
 #       - name: Upload Test Results
 #         uses: actions/upload-artifact@v3
@@ -58,7 +60,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: Dispaly env of prev job
-        run:  echo "workflow env stage  is ${{ needs.Tests.steps.customenv.env }}"
+        run:  echo "workflow env stage  is ${{ needs.Tests.steps.customenv.outputs.STAGE }}"
 #       - uses: actions/download-artifact@v3
 #         with:
 #           name: 'a'
