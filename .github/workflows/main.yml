@@ -4,7 +4,7 @@ on:
   push:
 env:
   STAGE_T : 'edge'
-  STAGE_CONCAT : ./p/${{ env.STAGE_T }}
+  STAGE_CONCAT : './p/${{ env.STAGE_T }}'
 jobs:
 #   uploadonefile:
 #     name: 'uploadonefile'
