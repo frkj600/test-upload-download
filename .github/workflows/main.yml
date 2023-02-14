@@ -1,6 +1,10 @@
 name: Playwright E2E
 on:
   workflow_dispatch:
+  push:
+env:
+  STAGE_T : 'edge'
+  STAGE_CONCAT : './p/${{ env.STAGE_T }}'
 jobs:
 #   uploadonefile:
 #     name: 'uploadonefile'
@@ -27,34 +31,49 @@ jobs:
         shardTotal: [2]
     steps:
       - uses: actions/checkout@v1
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: a
-          path: |
-            ./**/packages/pub-playwright/index.html
-          retention-days: 5
-      - name: Rename finally
-        run: mv ./packages/pub-playwright/index.html ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: b
-          path: |
-            ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
-          retention-days: 5
+      - name: Run env
+        id: customenv
+        env:
+           STAGE_PARAM : qa
+        run: |
+          echo "Main env is ${{ env.STAGE_CONCAT}}" 
+          echo "work flow is ${{ env.STAGE_PARAM}}"
+          echo "STAGE=${{ env.STAGE_PARAM}}" >> $GITHUB_OUTPUT
+          echo "test=world" >> $GITHUB_OUTPUT
+    outputs:
+      STAGE: ${{ steps.customenv.outputs.STAGE }}
+            
+#       - name: Upload Test Results
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: a
+#           path: |
+#             ./**/packages/pub-playwright/index.html
+#           retention-days: 5
+#       - name: Rename finally
+#         run: mv ./packages/pub-playwright/index.html ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
+#       - name: Upload Test Results
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: b
+#           path: |
+#             ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
+#           retention-days: 5
   Download:
     name: 'Try downloading'
     needs: 'Tests'
     runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: 'a'
+      - name: Dispaly env of prev job
+        run:  echo "workflow env stage  is ${{ toJSON(needs.Tests.outputs.STAGE) }}"
+#       - uses: actions/download-artifact@v3
+#         with:
+#           name: 'a'
       - name: Display structure of downloaded files
         run: ls -R
+    
           
 
 
