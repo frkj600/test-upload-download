@@ -4,7 +4,7 @@ on:
   push:
 env:
   STAGE_T : 'edge'
-  STAGE_CONCAT : ./p/${{ env.JUNIT_XML_FILE }}
+  STAGE_CONCAT : ./p/${{ env.STAGE_T }}
 jobs:
 #   uploadonefile:
 #     name: 'uploadonefile'
