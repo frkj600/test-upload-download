@@ -87,17 +87,4 @@ jobs:
 #           name: b
 #           path: |
 #             ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
-          retention-days: 5
-  Download:
-    name: 'Try downloading'
-    needs: 'Tests'
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: 'a'
-      - name: Display structure of downloaded files
-        run: ls -R
-          
-
 
