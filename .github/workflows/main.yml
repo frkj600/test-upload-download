@@ -1,7 +1,52 @@
 name: Playwright E2E
 on:
+  push:
   workflow_dispatch:
+  
+
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      build_id: ${{ steps.build_step.outputs.build_id }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        id: build_step
+        run: |
+          echo "build_id=bil23434" >> $GITHUB_OUTPUT
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      STAGE: ${{ needs.build.outputs.build_id }}
+    outputs:
+      build_id_2: ${{ steps.build_step.outputs.build_id }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        id: build_step
+        run: |
+          echo "workflow env stage  is ${{ env.STAGE }}"
+#   deploy:
+#    needs: test
+#    runs-on: ubuntu-latest
+#    steps:
+#       - uses: actions/checkout@v3
+#       - run: ./deploy --build ${{ needs.build.outputs.build_id }}
+# jobs:
+#   uploadonefile:
+#     name: 'uploadonefile'
+#     runs-on: [ubuntu-latest]
+#     steps:
+#       - uses: actions/checkout@v1
+#       - name: Upload Test Results
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: a
+#           path: |
+#             ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
 #   uploadonefile:
 #     name: 'uploadonefile'
 #     runs-on: [ubuntu-latest]
@@ -15,46 +60,33 @@ jobs:
 #           path: |
 #             ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
 #           retention-days: 5
-  Tests:
-    name: 'Try artifact ${{ matrix.shardIndex }}'
-#     needs: 'uploadonefile'
-    runs-on: [ubuntu-latest]
-#     continue-on-error: true
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1,2]
-        shardTotal: [2]
-    steps:
-      - uses: actions/checkout@v1
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: a
-          path: |
-            ./**/packages/pub-playwright/index.html
-          retention-days: 5
-      - name: Rename finally
-        run: mv ./packages/pub-playwright/index.html ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: b
-          path: |
-            ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
-          retention-days: 5
-  Download:
-    name: 'Try downloading'
-    needs: 'Tests'
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: 'a'
-      - name: Display structure of downloaded files
-        run: ls -R
-          
-
+#   Tests:
+#     name: 'Try artifact ${{ matrix.shardIndex }}'
+# #     needs: 'uploadonefile'
+#     runs-on: [ubuntu-latest]
+# #     continue-on-error: true
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         shardIndex: [1,2]
+#         shardTotal: [2]
+#     steps:
+#       - uses: actions/checkout@v1
+#       - name: Upload Test Results
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: a
+#           path: |
+#             ./**/packages/pub-playwright/index.html
+#           retention-days: 5
+#       - name: Rename finally
+#         run: mv ./packages/pub-playwright/index.html ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
+#       - name: Upload Test Results
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: b
+#           path: |
+#             ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
 
