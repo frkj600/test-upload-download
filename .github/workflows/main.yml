@@ -1,6 +1,8 @@
 name: Playwright E2E
 on:
+  push:
   workflow_dispatch:
+  
 
 jobs:
   build:
