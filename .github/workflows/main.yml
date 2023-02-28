@@ -19,7 +19,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     env:
-      STAGE: "${{ needs.build.outputs.build_id }}"
+      STAGE: ${{ needs.build.outputs.build_id }}
     outputs:
       build_id_2: ${{ steps.build_step.outputs.build_id }}
     steps:
