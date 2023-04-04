@@ -44,6 +44,7 @@ jobs:
            echo "$testsWithPath"
           done
           echo "Tests paths $testsWithPath"
+          printenv
          #  if [[(($spec == client*))]]
           #  then
           #   testsWithPath+="${separator}cypress/integration/Client\\ View/${spec}"
