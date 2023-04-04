@@ -47,7 +47,7 @@ jobs:
           echo "Tests paths $testsWithPath"
           #printenv
           #echo "::set-output name=customPjsTests::$testsWithPath"
-          echo "customPjsTests={$testsWithPath}" >> "$GITHUB_OUTPUT"
+          echo "customPjsTests=$testsWithPath" >> "$GITHUB_OUTPUT"
           echo 'Custom Final array ${{steps.customTestsToRun.outputs.customPjsTests}}'
          #  if [[(($spec == client*))]]
           #  then
