@@ -40,7 +40,10 @@ jobs:
            else 
             separator=""
            fi
-           if [[(($spec == client*))]]
+           testsWithPath+="${separator}cypress/integration/**/${spec}"
+           echo "$testsWithPath"
+          done
+         #  if [[(($spec == client*))]]
           #  then
           #   testsWithPath+="${separator}cypress/integration/Client\\ View/${spec}"
           #  elif [[(($spec == curator*))]]
@@ -56,9 +59,7 @@ jobs:
           #  then 
           #   testsWithPath+="${separator}cypress/integration/Narrative\\ Manager/${spec}"
           #  fi
-           testsWithPath+="${separator}cypress/integration/**/${spec}"
-           echo "$testsWithPath"
-          done
+       
 #       - name: Upload Test Results
 #         uses: actions/upload-artifact@v3
 #         if: always()
