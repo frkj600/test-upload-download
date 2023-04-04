@@ -21,7 +21,7 @@ jobs:
     runs-on: [ubuntu-latest]
 #     continue-on-error: true
     env:
-      testsToRun: 'client-render client-view-render'
+      testsToRun: 'client-render,client-view-render'
     strategy:
       fail-fast: false
       matrix:
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Test loop
         run: |
-          for spec in  $testsToRun
+          for spec in  $(echo $testsToRun | tr "," " ")
           do 
            echo "$spec"
           done
