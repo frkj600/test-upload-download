@@ -34,6 +34,12 @@ jobs:
           for spec in  $(echo $testsToRun | tr "," " ")
           do 
            echo "$spec"
+           if [[(($testsWithPath))]]
+           then
+            separator=","
+           else 
+            separator=""
+           fi
           done
 #       - name: Upload Test Results
 #         uses: actions/upload-artifact@v3
