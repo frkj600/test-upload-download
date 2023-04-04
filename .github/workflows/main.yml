@@ -1,6 +1,6 @@
 name: Playwright E2E
 on:
-  workflow_dispatch:
+  push:
 jobs:
 #   uploadonefile:
 #     name: 'uploadonefile'
@@ -21,7 +21,7 @@ jobs:
     runs-on: [ubuntu-latest]
 #     continue-on-error: true
     env:
-      testsToRun: 'client-render.spec.ts,client-view-render.spec.ts'
+      testsToRun: 'client-render.spec.ts,client-view-render.spec.ts,queue-view.spec.ts'
     strategy:
       fail-fast: false
       matrix:
@@ -30,9 +30,43 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Test loop
+        id: customTestsToRun
         run: |
-          for spec in $(echo $testsToRun | tr "," " "); do if [[(($testsWithPath))]]; then separator=","; else separator=""; fi; if [[(($spec == client*))]]; then testsWithPath+="${separator}cypress/integration/Client\\ View/${spec}"; elif [[(($spec == curator*))]]; then testsWithPath+="${separator}cypress/integration/Curator\\ View/${spec}"; elif [[(($spec == inhouse*))]]; then testsWithPath+="${separator}cypress/integration/Inhouse\\ View/${spec}"; elif [[(($spec == queue*))]]; then testsWithPath+="${separator}cypress/integration/Queue\\ View/${spec}"; elif [[(($spec == publisher*))]]; then testsWithPath+="${separator}cypress/integration/Narrative\\ Manager/${spec}"; fi;  done; echo $testsWithPath'
-
+          for spec in  $(echo $testsToRun | tr "," " ")
+          do 
+           echo "$spec"
+           if [[(($testsWithPath))]]
+           then
+            separator=","
+           else 
+            separator=""
+           fi
+           testsWithPath+="${separator}cypress/integration/**/${spec}"
+           echo "$testsWithPath"
+          done
+          echo "Tests paths $testsWithPath"
+          #printenv
+          echo "::set-output name=customPjsTests::$testsWithPath"
+          #echo "customPjsTests=$testsWithPath" >> "$GITHUB_OUTPUT"
+      - name: Get Custom Tests
+        run : echo 'Custom Final array ${{steps.customTestsToRun.outputs.customPjsTests}}'
+         #  if [[(($spec == client*))]]
+          #  then
+          #   testsWithPath+="${separator}cypress/integration/Client\\ View/${spec}"
+          #  elif [[(($spec == curator*))]]
+          #  then
+          #   testsWithPath+="${separator}cypress/integration/Curator\\ View/${spec}"
+          #  elif [[(($spec == inhouse*))]]
+          #  then
+          #   testsWithPath+="${separator}cypress/integration/Inhouse\\ View/${spec}"
+          #  elif [[(($spec == queue*))]]
+          #  then 
+          #   testsWithPath+="${separator}cypress/integration/Queue\\ View/${spec}"
+          #  elif [[(($spec == publisher*))]]
+          #  then 
+          #   testsWithPath+="${separator}cypress/integration/Narrative\\ Manager/${spec}"
+          #  fi
+       
 #       - name: Upload Test Results
 #         uses: actions/upload-artifact@v3
 #         if: always()
