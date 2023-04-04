@@ -33,7 +33,7 @@ jobs:
         run: |
           for spec in  $testsToRun
           do 
-           print "$spec"
+           echo "$spec"
           done
 #       - name: Upload Test Results
 #         uses: actions/upload-artifact@v3
