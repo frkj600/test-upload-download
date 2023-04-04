@@ -30,6 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Test loop
+        id: customTestsToRun
         run: |
           for spec in  $(echo $testsToRun | tr "," " ")
           do 
@@ -45,6 +46,8 @@ jobs:
           done
           echo "Tests paths $testsWithPath"
           printenv
+          echo "::set-output name=customPjsTests::$testsWithPath"
+          echo 'Custom Final array ${{steps.customTestsToRun.outputs.customPjsTests}}'
          #  if [[(($spec == client*))]]
           #  then
           #   testsWithPath+="${separator}cypress/integration/Client\\ View/${spec}"
