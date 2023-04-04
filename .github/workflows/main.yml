@@ -1,6 +1,6 @@
 name: Playwright E2E
 on:
-  workflow_dispatch:
+  push:
 jobs:
 #   uploadonefile:
 #     name: 'uploadonefile'
