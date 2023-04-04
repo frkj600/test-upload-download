@@ -41,21 +41,22 @@ jobs:
             separator=""
            fi
            if [[(($spec == client*))]]
-           then
-            testsWithPath+="${separator}cypress/integration/Client\\ View/${spec}"
-           elif [[(($spec == curator*))]]
-           then
-            testsWithPath+="${separator}cypress/integration/Curator\\ View/${spec}"
-           elif [[(($spec == inhouse*))]]
-           then
-            testsWithPath+="${separator}cypress/integration/Inhouse\\ View/${spec}"
-           elif [[(($spec == queue*))]]
-           then 
-            testsWithPath+="${separator}cypress/integration/Queue\\ View/${spec}"
-           elif [[(($spec == publisher*))]]
-           then 
-            testsWithPath+="${separator}cypress/integration/Narrative\\ Manager/${spec}"
-           fi
+          #  then
+          #   testsWithPath+="${separator}cypress/integration/Client\\ View/${spec}"
+          #  elif [[(($spec == curator*))]]
+          #  then
+          #   testsWithPath+="${separator}cypress/integration/Curator\\ View/${spec}"
+          #  elif [[(($spec == inhouse*))]]
+          #  then
+          #   testsWithPath+="${separator}cypress/integration/Inhouse\\ View/${spec}"
+          #  elif [[(($spec == queue*))]]
+          #  then 
+          #   testsWithPath+="${separator}cypress/integration/Queue\\ View/${spec}"
+          #  elif [[(($spec == publisher*))]]
+          #  then 
+          #   testsWithPath+="${separator}cypress/integration/Narrative\\ Manager/${spec}"
+          #  fi
+           testsWithPath+="${separator}cypress/integration/**/${spec}"
            echo "$testsWithPath"
           done
 #       - name: Upload Test Results
