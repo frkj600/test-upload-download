@@ -20,6 +20,8 @@ jobs:
 #     needs: 'uploadonefile'
     runs-on: [ubuntu-latest]
 #     continue-on-error: true
+    env:
+      testsToRun: 'client-render.spec.ts,client-view-render.spec.ts'
     strategy:
       fail-fast: false
       matrix:
@@ -27,34 +29,38 @@ jobs:
         shardTotal: [2]
     steps:
       - uses: actions/checkout@v1
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: a
-          path: |
-            ./**/packages/pub-playwright/index.html
-          retention-days: 5
-      - name: Rename finally
-        run: mv ./packages/pub-playwright/index.html ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: b
-          path: |
-            ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
-          retention-days: 5
-  Download:
-    name: 'Try downloading'
-    needs: 'Tests'
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: 'a'
-      - name: Display structure of downloaded files
-        run: ls -R
+      - name: Test loop
+        run: |
+          for spec in $(echo $testsToRun | tr "," " "); do if [[(($testsWithPath))]]; then separator=","; else separator=""; fi; if [[(($spec == client*))]]; then testsWithPath+="${separator}cypress/integration/Client\\ View/${spec}"; elif [[(($spec == curator*))]]; then testsWithPath+="${separator}cypress/integration/Curator\\ View/${spec}"; elif [[(($spec == inhouse*))]]; then testsWithPath+="${separator}cypress/integration/Inhouse\\ View/${spec}"; elif [[(($spec == queue*))]]; then testsWithPath+="${separator}cypress/integration/Queue\\ View/${spec}"; elif [[(($spec == publisher*))]]; then testsWithPath+="${separator}cypress/integration/Narrative\\ Manager/${spec}"; fi;  done; echo $testsWithPath'
+
+#       - name: Upload Test Results
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: a
+#           path: |
+#             ./**/packages/pub-playwright/index.html
+#           retention-days: 5
+#       - name: Rename finally
+#         run: mv ./packages/pub-playwright/index.html ./packages/pub-playwright/index-${{ matrix.shardIndex }}.html
+#       - name: Upload Test Results
+#         uses: actions/upload-artifact@v3
+#         if: always()
+#         with:
+#           name: b
+#           path: |
+#             ./**/packages/pub-playwright/index-${{ matrix.shardIndex }}.html
+#           retention-days: 5
+#   Download:
+#     name: 'Try downloading'
+#     needs: 'Tests'
+#     runs-on: [ubuntu-latest]
+#     steps:
+#       - uses: actions/download-artifact@v3
+#         with:
+#           name: 'a'
+#       - name: Display structure of downloaded files
+#         run: ls -R
           
 
 
