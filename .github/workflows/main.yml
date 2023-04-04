@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Test loop
         run: |
-          env.list=for spec in  $(echo $testsToRun | tr "," " ")
+          for spec in  $(echo $testsToRun | tr "," " ")
           do 
            echo "$spec"
            if [[(($testsWithPath))]]
@@ -43,6 +43,7 @@ jobs:
            testsWithPath+="${separator}cypress/integration/**/${spec}"
            echo "$testsWithPath"
           done
+          echo "Tests paths $testsWithPath"
          #  if [[(($spec == client*))]]
           #  then
           #   testsWithPath+="${separator}cypress/integration/Client\\ View/${spec}"
